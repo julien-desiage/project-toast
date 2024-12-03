@@ -2,11 +2,10 @@ import React from 'react';
 
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
+import { ToastContext } from '../../providers/ToastProvider';
 
-function ToastShelf({ toastList, setToastList }) {
-  const removeToast = (id) => {
-    setToastList(toastList.filter((toastListItem) => toastListItem.id !== id));
-  };
+function ToastShelf() {
+  const { toastList, removeToast } = React.useContext(ToastContext);
 
   if (toastList.length === 0) {
     return null;

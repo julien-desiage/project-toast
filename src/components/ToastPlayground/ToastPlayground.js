@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
-import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,8 +9,28 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState('');
-  const [variant, setVariant] = React.useState('notice');
-  const [showToast, setShowToast] = React.useState(false);
+  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
+  const [toastList, setToastList] = React.useState([]);
+
+  const addToast = ({ message, variant }) => {
+    setToastList([
+      ...toastList,
+      {
+        message,
+        variant,
+        id: crypto.randomUUID(),
+      },
+    ]);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (message) {
+      addToast({ message, variant });
+      setMessage('');
+      setVariant(VARIANT_OPTIONS[0]);
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -19,26 +39,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {showToast && (
-        <Toast
-          variant={variant}
-          handleClickClose={() => {
-            setShowToast(false);
-          }}
-        >
-          {message}
-        </Toast>
-      )}
+      <ToastShelf toastList={toastList} setToastList={setToastList} />
 
-      <form
-        className={styles.controlsWrapper}
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (message) {
-            setShowToast(true);
-          }
-        }}
-      >
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -51,6 +54,7 @@ function ToastPlayground() {
             <textarea
               id="message"
               className={styles.messageInput}
+              required={true}
               onChange={(event) => setMessage(event.target.value)}
               value={message}
             >

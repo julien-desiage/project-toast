@@ -2,7 +2,7 @@
 
 ## Joy of React, Project II
 
-This project in an exercise of [The Joy of React](https://www.joyofreact.com/) course.
+This project is an exercise of [The Joy of React](https://www.joyofreact.com/) course.
 
 https://github.com/joy-of-react/project-toast
 
